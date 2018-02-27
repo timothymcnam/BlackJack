@@ -1,14 +1,19 @@
-public class BlackJack{
+public class GameDriver{
    
-   static Deck deck;
+   static Game game;
    
    public static void main(String[] args){
-      deck = new Deck(1); //Initiate with the number of different decks being used
+      game = new Game();
+      
+      //TODO;
+      //We probably want a scanner or some type of input
+      //Scan in values
+      //edit game hands
+      //then call getProb()
       
    }
    
-   
-   void play(){
+   void getProb(){
       
       //Calculate probability of winning on stay
       //Print money won on stay * probability of winning
