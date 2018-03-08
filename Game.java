@@ -124,22 +124,56 @@ public class Game{
       return dup;
    }
    
-   // TODO: Make below methods
-   
+   // TODO: Make below method
    int maxValue(ArrayList<Integer> hand){
       //if not over 21, aces count as high number
       //if over 21, set 1 ace to one until under 21
-      //if all aces are 1, and still bust return -1
+      //if all aces are 1 and over 21 return
       return -1;
+   }
+   
+   boolean dealerMustHit(){
+      // dealer must hit on soft 17 
+      return true;
    }
    
    int minValue(ArrayList<Integer> hand){
-      //aces count as 1
-      //return values added up
-      //return -1 if bust
-      return -1;
+      int totalVal = 0;
+      
+      int iter = hand.size();
+      
+      for(int i = 0; i < iter; i++){
+         totalVal += cardNumToVal(hand.get(i), true);
+         if(totalVal > 21) return totalVal;
+      }
+      return totalVal;
    }
    
+   boolean playerCanHit(){
+      if(minValue(playersHand) < 21){
+         return true;
+      }
+      else{
+         return false;
+      }
+   }
    
+   int cardNumToVal(int cardNum, boolean aceIsOne){
+      //if true aces count as 1, otherwise 11
+      // 1 ace, 2 2, ..., 10 10, 11 jack(10), 12 queen, 13 king
+      if(cardNum == 1){
+         if(aceIsOne) return 1;
+         else return 11;
+      }
+      else if (cardNum > 1 && cardNum < 11){
+         return cardNum;
+      }
+      else if(cardNum > 10 && cardNum < 14){
+         return 10;
+      }
+      else{
+         return -1; //invalid card
+      }
+   }
   
 }
