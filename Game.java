@@ -26,29 +26,10 @@ public class Game{
       deck.cardSeen(cardNum);
    }
    
-   //clear and set hand with multiple cards
-   void setDealersHand(int[] cards){
-      int max = cards.length;
-      dealersHand.clear();
-      for(int i = 0; i<max; i++){
-         dealersHand.add(cards[i]);
-         deck.cardSeen(cards[i]);
-      }
-   }
-   
    //Add a card to the dealers hand
    void addToDealersHand(int card){
       dealersHand.add(card);
       deck.cardSeen(card);
-   }
-   
-   //Add multiple cards to the dealers hand
-   void addToDealersHand(int[] cards){
-      int max = cards.length;
-      for(int i = 0; i<max; i++){
-         dealersHand.add(cards[i]);
-         deck.cardSeen(cards[i]);
-      }
    }
    
    //Clear and set hand
@@ -60,29 +41,10 @@ public class Game{
       deck.cardSeen(card2);
    }
    
-   //Alternative way to set hand with more than 2 cards
-   void setPlayersHand(int[] cards){
-      int max = cards.length;
-      playersHand.clear();
-      for(int i = 0; i<max; i++){
-         playersHand.add(cards[i]);
-         deck.cardSeen(cards[i]);
-      }
-   }
-   
    //Add a card to the player's hand
    void addToPlayersHand(int card){
       playersHand.add(card);
       deck.cardSeen(card);
-   }
-   
-   //Add multiple cards to the players hand
-   void addToPlayersHand(int[] cards){
-      int max = cards.length;
-      for(int i = 0; i<max; i++){
-         playersHand.add(cards[i]);
-         deck.cardSeen(cards[i]);
-      }
    }
    
    void otherCardSeen(int card){
@@ -93,7 +55,7 @@ public class Game{
    void otherCardSeen(int[] cards){
       int max = cards.length;
       for(int i = 0; i<max; i++){
-         deck.cardSeen(cards[i]);
+         otherCardSeen(cards[i]);
       }
    }
    
