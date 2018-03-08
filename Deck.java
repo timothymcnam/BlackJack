@@ -3,12 +3,12 @@ import java.util.HashMap;
 public class Deck{
    
    //define class variables
-   static int numDecks;
-   static int cards;
-   static int numCardsDrawn;
-   static int numCardsLeft;
-   static HashMap<Integer, Integer> cardsDrawn;
-   static HashMap<Integer, Integer> cardsLeft;
+   int numDecks;
+   int cards;
+   int numCardsDrawn;
+   int numCardsLeft;
+   HashMap<Integer, Integer> cardsDrawn;
+   HashMap<Integer, Integer> cardsLeft;
    
    public Deck(int num_decks){
       //set all class variable values

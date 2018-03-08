@@ -2,9 +2,9 @@ import java.util.ArrayList;
 
 public class Game{
    
-   static Deck deck;
-   static ArrayList<Integer> dealersHand;
-   static ArrayList<Integer> playersHand;
+   Deck deck;
+   ArrayList<Integer> dealersHand;
+   ArrayList<Integer> playersHand;
    
    public Game(){
       deck = new Deck(1); //Initiate with the number of different decks being used
