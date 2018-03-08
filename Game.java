@@ -143,18 +143,6 @@ public class Game{
       return handCount;
    }
    
-   boolean dealerMustHit(){
-      // dealer must hit on soft 17 
-      int handCount = maxValue(dealersHand);
-      if(handCount > 17) return false;
-      else if(handCount < 17) return true;
-      else{
-         if(dealersHand.contains(1)) return true; //Check for ace, ace -> soft 17 -> true
-         else return false;
-      }
-      
-   } 
-   
    int minValue(ArrayList<Integer> hand){
       int totalVal = 0;
       
@@ -176,6 +164,17 @@ public class Game{
       }
    }
    
+   boolean dealerMustHit(){
+      // dealer must hit on soft 17 
+      int handCount = maxValue(dealersHand);
+      if(handCount > 17) return false;
+      else if(handCount < 17) return true;
+      else{
+         if(dealersHand.contains(1)) return true; //Check for ace, ace -> soft 17 -> true
+         else return false;
+      }
+   } 
+   
    int cardNumToVal(int cardNum, boolean aceIsOne){
       //if true aces count as 1, otherwise 11
       // 1 ace, 2 2, ..., 10 10, 11 jack(10), 12 queen, 13 king
@@ -192,6 +191,12 @@ public class Game{
       else{
          return -1; //invalid card
       }
+   }
+   
+   double probOfNextCard(int cardNum){
+      int cardTypeLeft = deck.getCardsLeft().get(cardNum);
+      int totalCardsLeft = deck.getNumCardsLeft();
+      return cardTypeLeft/totalCardsLeft;
    }
   
 }
