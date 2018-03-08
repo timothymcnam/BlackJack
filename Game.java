@@ -19,20 +19,20 @@ public class Game{
       deck.resetDeck();
    }
    
-   //clear and set dealer's hand
+   //clear, set dealer's hand, mark as seen
    void setDealersHand(int cardNum){
       dealersHand.clear();
       dealersHand.add(cardNum);
       deck.cardSeen(cardNum);
    }
    
-   //Add a card to the dealers hand
+   //Add a card to the dealers hand and mark as seen
    void addToDealersHand(int card){
       dealersHand.add(card);
       deck.cardSeen(card);
    }
    
-   //Clear and set hand
+   //clear, set player's hand, mark as seen
    void setPlayersHand(int card1, int card2){
       playersHand.clear();
       playersHand.add(card1);
@@ -41,17 +41,18 @@ public class Game{
       deck.cardSeen(card2);
    }
    
-   //Add a card to the player's hand
+   //Add a card to the player's hand and mark as seen
    void addToPlayersHand(int card){
       playersHand.add(card);
       deck.cardSeen(card);
    }
    
+   //Mark a card as seen
    void otherCardSeen(int card){
       deck.cardSeen(card);
    }
    
-   //Add multiple cards to the players hand
+   //Mark multiple cards as seen
    void otherCardSeen(int[] cards){
       int max = cards.length;
       for(int i = 0; i<max; i++){
@@ -67,6 +68,7 @@ public class Game{
       return dealersHand;
    }
    
+   //Make a duplicate of this game (deep copy)
    Game copyGame(){
       Game dup = new Game();
       
@@ -86,8 +88,8 @@ public class Game{
       return dup;
    }
    
+   //return max possible value of hand that is under 21 (Ace = 11 if under 21, else some/all aces = 1)
    int maxValue(ArrayList<Integer> hand){
-      //return max value under 21
       int numAces = 0;
       
       int iter = hand.size();
@@ -105,6 +107,7 @@ public class Game{
       return handCount;
    }
    
+   //Returns min possible value of hand (ace = 1)
    int minValue(ArrayList<Integer> hand){
       int totalVal = 0;
       
@@ -117,6 +120,7 @@ public class Game{
       return totalVal;
    }
    
+   //If the player is allowed to hit
    boolean playerCanHit(){
       if(minValue(playersHand) < 21){
          return true;
@@ -126,6 +130,7 @@ public class Game{
       }
    }
    
+   //If the dealer hits or stays
    boolean dealerMustHit(){
       // dealer must hit on soft 17 
       int handCount = maxValue(dealersHand);
@@ -137,9 +142,10 @@ public class Game{
       }
    } 
    
+   //Given number representing card, get the value (ex. King(13) -> 10)
+   //aceIsOne determines if ace counts as 1 (true) or 11 (false)
    int cardNumToVal(int cardNum, boolean aceIsOne){
-      //if true aces count as 1, otherwise 11
-      // 1 ace, 2 2, ..., 10 10, 11 jack(10), 12 queen, 13 king
+   
       if(cardNum == 1){
          if(aceIsOne) return 1;
          else return 11;
@@ -155,6 +161,7 @@ public class Game{
       }
    }
    
+   //Given cards seen, what is the prob of drawing a certain card
    double probOfNextCard(int cardNum){
       int cardTypeLeft = deck.getCardsLeft().get(cardNum);
       int totalCardsLeft = deck.getNumCardsLeft();

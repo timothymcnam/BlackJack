@@ -19,12 +19,23 @@ public class GameDriver{
       
       //Calculate probability of winning on move
       //Print average money amount = (won on move * probability of winning) - (money lost * prob losing)
-      double hitProb = getProbHit();
-      double hitMoney = (hitProb * bet) - ((1 - hitProb) * bet);
       
-      // TODO calculate Money for other bet types as well
+      //ex.
+      //If player's hand is under 21
       
-      // Return array with maximum Money amount as well as the number the corresponds to that move  (use retArray)
+         //If can hit
+            //double hitProb = getProbHit();
+            //double hitMoney = (hitProb * bet) - ((1 - hitProb) * bet);
+            
+         //If can stay
+            //calculate this
+            
+         //Calc for other  hand types as wells
+      
+      
+      
+      
+      // Return array with maximum Money amount as well as the number that corresponds to that move  (use retArray)
       
       
       
