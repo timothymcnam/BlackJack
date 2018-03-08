@@ -120,14 +120,37 @@ public class Game{
       return totalVal;
    }
    
-   //If the player is allowed to hit
-   boolean playerCanHit(){
+   //If the player is allowed to make a move
+   boolean playerCanMove(){
       if(minValue(playersHand) < 21){
          return true;
       }
       else{
          return false;
       }
+   }
+   
+   boolean playerCanHit(){
+      return playerCanMove();
+   }
+   
+   boolean playerCanStay(){
+      return true;
+   }
+   
+   boolean playerCanSplit(){
+      //TODO - return whether or not player is allowed to split based on rules of blackjack (ex. has 2 of same card)
+      return false;
+   }
+   
+   boolean playerCanDouble(){
+      //TODO
+      return false;
+   }
+   
+   boolean playerCanSurrender(){
+      //TODO
+      return false;
    }
    
    //If the dealer hits or stays
