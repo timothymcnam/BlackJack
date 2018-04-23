@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class GameDriver{
    
    static Game game;
@@ -6,8 +8,36 @@ public class GameDriver{
    public static void main(String[] args){
       game = new Game();
       
-      int[] f ={0,1,2,0,1};
-      System.out.println(maxCostItem(f));
+   int[] startHandPlayer = {0,0};
+   int startHandDealer = 0;
+   boolean handActive = true;
+   int newCard = 0;
+   Scanner sc=new Scanner(System.in);
+   System.out.println("Your starting hand:");
+   System.out.println("Ace = 1, 2 = 2, ...,  King = 13");
+   System.out.println("Enter first card value");
+   startHandPlayer[0] = sc.nextInt();
+   System.out.println("Enter second card value");
+   startHandPlayer[1] = sc.nextInt();
+   game.setPlayersHand(startHandPlayer[0], startHandPlayer[1]);
+   System.out.println("The Dealer's starting hand:");
+   System.out.println("Ace = 1, 2 = 2, ...,  King = 13");
+   System.out.println("Enter the Dealer's visible card value");
+   startHandDealer = sc.nextInt();
+   game.setDealersHand(startHandDealer);
+   System.out.println("Your starting hand is: " + startHandPlayer[0] + " , " + startHandPlayer[1] + ".");
+   System.out.println("The Dealer's visible card is: " + startHandDealer + ".");
+   double[] res = getProb(game);
+   System.out.println(res[0]);
+   System.out.println(res[0]);
+   while (handActive == true) {
+      System.out.print("If hit, enter card value received. If stay, enter -1");
+      newCard = sc.nextInt();
+      if (newCard == -1) 
+         handActive = false;
+      else  
+         game.addToPlayersHand(newCard);
+   }
       
       //TODO;
       //We probably want a scanner or some type of input
@@ -17,23 +47,34 @@ public class GameDriver{
       
    }
    
-   public static int maxCostItem(int[] items){
-   	int maxItem = 0;
-   	int curMax = 0;
-   	for(int i=0;i<items.length;i++){
-      	if(items[i]>curMax)
-        	maxItem = items[i];
-   	}
-   	return maxItem;	 
-  }
-
-
-   
-   double[] getProb(){
+   static double[] getProb(Game g){
       double[] retArray = new double[2]; //[0] = probability of best move, [1] = the move itself {1 = hit, 2=stay, split, double, surr}
       
       //Calculate probability of winning on move
       //Print average money amount = (won on move * probability of winning) - (money lost * prob losing)
+      
+      if(game.playerCanMove()){
+         //Recursive Case
+         
+         double hitProb = 0.0;
+         double stayProb = 0.0;
+         
+         if(g.playerCanHit()){
+            hitProb = getProbHit(g);
+         }
+         if(g.playerCanStay()){
+            stayProb = getProbStay(g);
+         }
+         
+         if (hitProb > stayProb) retArray = new double[] {hitProb, 1.0};
+         else retArray = new double[] {stayProb, 2.0};
+         
+      }
+      else{
+         //Base Case - End the Recursion
+         retArray = new double[] {0.0, 2.0};
+         // return retArray;
+      }
       
       //ex.
       //If player's hand is under 21
@@ -58,30 +99,75 @@ public class GameDriver{
       return retArray;
    }
    
-   double getProbHit(){
+   static double getProbHit(Game g){
       //TODO
-      return 0.0;
-   }
-   
-   double getProbStay(){
-      //TODO
-      return 0.0;
-   }
-   
-   double[] getProbSplit(){
-      //TODO
-      double[] retArray = new double[2]; //[0] = probability of 1st hand, [1] = probability of 2nd
+      double[] probs = new double[13];
+      for(int i =0; i<13; i++){
+         probs[i] = g.probOfNextCard(i+1);
+      }
       
-      return retArray;
+      Game[] games = new Game[13];
+      for(int i =0; i<13; i++){
+         games[i] = g.copyGame();
+         games[i].addToPlayersHand(i+1);
+      }
+      
+      
+      // double[] rets = new double[13];
+      double ret = 0.0;
+      for(int i =0; i<13; i++){
+         ret += probs[i]*getProb(games[i])[0];
+      }
+      
+      return ret;
    }
    
-   double getProbDouble(){
+   static double getProbStay(Game g){
       //TODO
-      return 0.0;
+      if(g.dealerMustHit()){
+      
+         double[] probs = new double[13];
+         for(int i =0; i<13; i++){
+            probs[i] = g.probOfNextCard(i+1);
+         }
+         
+         Game[] games = new Game[13];
+         for(int i =0; i<13; i++){
+            games[i] = g.copyGame();
+            games[i].addToDealersHand(i+1);
+         }
+         
+         double ret = 0.0;
+         for(int i =0; i<13; i++){
+            ret += probs[i]*getProbStay(games[i]);
+         }
+         return ret;
+         
+      }
+      else{
+         if(g.maxValue(g.playersHand) > 21) return 0.0;
+         else if(g.maxValue(g.dealersHand) > 21) return 1.0;
+         else if(g.maxValue(g.playersHand) == g.maxValue(g.dealersHand)) return 0.5;
+         else if(g.maxValue(g.playersHand) > g.maxValue(g.dealersHand)) return 1.0;
+         else return 0.0;
+      }
+      
    }
    
-   double getProbSurrender(){
-      return 0.0;
-   }
+//    double[] getProbSplit(){
+//       //TODO
+//       double[] retArray = new double[2]; //[0] = probability of 1st hand, [1] = probability of 2nd
+//       
+//       return retArray;
+//    }
+//    
+//    double getProbDouble(){
+//       //TODO
+//       return 0.0;
+//    }
+//    
+//    double getProbSurrender(){
+//       return 0.0;
+//    }
   
 }
