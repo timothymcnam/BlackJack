@@ -5,6 +5,8 @@ public class Game{
    Deck deck;
    ArrayList<Integer> dealersHand;
    ArrayList<Integer> playersHand;
+   public boolean haveSplit = false;
+   public boolean haveDoubled = false;
    
    public Game(){
       deck = new Deck(1); //Initiate with the number of different decks being used
@@ -120,7 +122,7 @@ public class Game{
       return totalVal;
    }
    
-   //If the player is allowed to make a move
+   //If the player is allowed to make a move - check if the players hand is > 21
    boolean playerCanMove(){
       if(minValue(playersHand) < 21){
          return true;
@@ -132,26 +134,35 @@ public class Game{
    
    boolean playerCanHit(){
       //TODO
-      return playerCanMove();
+      //You can only hit once after doubling down - so check haveDoubled variable
+      if(playersHand.size() <= 1) return true;
+      else if(haveDoubled && playersHand.size() >= 3) return false;
+      else return playerCanMove();
    }
    
    boolean playerCanStay(){
-      return true;
+      //TODO
+      //Can only stay if the player's hand has 2 or more cards - should only have < 2 cards if we split (or if game has not b)
+      if(playersHand.size() >= 2) return true;
+      else return false;
    }
    
    boolean playerCanSplit(){
       //TODO - return whether or not player is allowed to split based on rules of blackjack (ex. has 2 of same card)
-      return false;
+      if(playersHand.size() == 2 && playersHand.get(0) == playersHand.get(1)) return true;
+      else return false;
    }
    
    boolean playerCanDouble(){
       //TODO
-      return false;
+      if(playersHand.size() == 2) return true;
+      else return false;
    }
    
    boolean playerCanSurrender(){
       //TODO
-      return false;
+      if(playersHand.size() >= 2) return true;
+      else return false;
    }
    
    //If the dealer hits or stays
