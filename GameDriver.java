@@ -6,6 +6,9 @@ public class GameDriver{
    public static void main(String[] args){
       game = new Game();
       
+      int[] f ={0,1,2,0,1};
+      System.out.println(maxCostItem(f));
+      
       //TODO;
       //We probably want a scanner or some type of input
       //Scan in values
@@ -13,6 +16,18 @@ public class GameDriver{
       //then call getProb()
       
    }
+   
+   public static int maxCostItem(int[] items){
+   	int maxItem = 0;
+   	int curMax = 0;
+   	for(int i=0;i<items.length;i++){
+      	if(items[i]>curMax)
+        	maxItem = items[i];
+   	}
+   	return maxItem;	 
+  }
+
+
    
    double[] getProb(){
       double[] retArray = new double[2]; //[0] = probability of best move, [1] = the move itself {1 = hit, 2=stay, split, double, surr}
