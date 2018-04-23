@@ -8,43 +8,38 @@ public class GameDriver{
    public static void main(String[] args){
       game = new Game();
       
-   int[] startHandPlayer = {0,0};
-   int startHandDealer = 0;
-   boolean handActive = true;
-   int newCard = 0;
-   Scanner sc=new Scanner(System.in);
-   System.out.println("Your starting hand:");
-   System.out.println("Ace = 1, 2 = 2, ...,  King = 13");
-   System.out.println("Enter first card value");
-   startHandPlayer[0] = sc.nextInt();
-   System.out.println("Enter second card value");
-   startHandPlayer[1] = sc.nextInt();
-   game.setPlayersHand(startHandPlayer[0], startHandPlayer[1]);
-   System.out.println("The Dealer's starting hand:");
-   System.out.println("Ace = 1, 2 = 2, ...,  King = 13");
-   System.out.println("Enter the Dealer's visible card value");
-   startHandDealer = sc.nextInt();
-   game.setDealersHand(startHandDealer);
-   System.out.println("Your starting hand is: " + startHandPlayer[0] + " , " + startHandPlayer[1] + ".");
-   System.out.println("The Dealer's visible card is: " + startHandDealer + ".");
-   double[] res = getProb(game);
-   System.out.println(res[0]);
-   System.out.println(res[0]);
-   while (handActive == true) {
-      System.out.print("If hit, enter card value received. If stay, enter -1");
-      newCard = sc.nextInt();
-      if (newCard == -1) 
-         handActive = false;
-      else  
-         game.addToPlayersHand(newCard);
-   }
-      
-      //TODO;
-      //We probably want a scanner or some type of input
-      //Scan in values
-      //edit game hands
-      //then call getProb()
-      
+      int[] startHandPlayer = {0,0};
+      int startHandDealer = 0;
+      boolean handActive = true;
+      int newCard = 0;
+      Scanner sc=new Scanner(System.in);
+      System.out.println("Your starting hand:");
+      System.out.println("Ace = 1, 2 = 2, ...,  King = 13");
+      System.out.println("Enter first card value");
+      startHandPlayer[0] = sc.nextInt();
+      System.out.println("Enter second card value");
+      startHandPlayer[1] = sc.nextInt();
+      game.setPlayersHand(startHandPlayer[0], startHandPlayer[1]);
+      System.out.println("The Dealer's starting hand:");
+      System.out.println("Ace = 1, 2 = 2, ...,  King = 13");
+      System.out.println("Enter the Dealer's visible card value");
+      startHandDealer = sc.nextInt();
+      game.setDealersHand(startHandDealer);
+      System.out.println("Your starting hand is: " + startHandPlayer[0] + " , " + startHandPlayer[1] + ".");
+      System.out.println("The Dealer's visible card is: " + startHandDealer + ".");
+      double[] res = getProb(game);
+      System.out.println(res[0]);
+      System.out.println(res[0]);
+      while(true){
+         while (handActive == true) {
+            System.out.print("If hit, enter card value received. If stay, enter -1");
+            newCard = sc.nextInt();
+            if (newCard == -1) 
+               handActive = false;
+            else  
+               game.addToPlayersHand(newCard);
+         }
+      }
    }
    
    static double[] getProb(Game g){
