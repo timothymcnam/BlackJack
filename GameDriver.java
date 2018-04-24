@@ -27,10 +27,12 @@ public class GameDriver{
       game.setDealersHand(startHandDealer);
       System.out.println("Your starting hand is: " + startHandPlayer[0] + " , " + startHandPlayer[1] + ".");
       System.out.println("The Dealer's visible card is: " + startHandDealer + ".");
-//       double[] res = getProb(game);
-//       System.out.println(res[0]);
-//       System.out.println(res[0]);
-      System.out.println(getProbStay(game));
+      
+      double[] res = getProb(game);
+      System.out.println(res[0]);
+      System.out.println(res[1]);
+      // System.out.println(getProbStay(game));
+      
       while(true){
          while (handActive == true) {
             System.out.print("If hit, enter card value received. If stay, enter -1");
@@ -44,7 +46,7 @@ public class GameDriver{
    }
    
    static double[] getProb(Game g){
-      System.out.println(g.deck.numCardsLeft);
+     //  System.out.println(g.deck.numCardsLeft);
       //For testing the decks
 //       System.out.println("Stuff:");
 //       for(Integer i : g.playersHand){
