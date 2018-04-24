@@ -193,7 +193,7 @@ public class Game{
    double probOfNextCard(int cardNum){
       int cardTypeLeft = deck.getCardsLeft().get(cardNum);
       int totalCardsLeft = deck.getNumCardsLeft();
-      return cardTypeLeft/totalCardsLeft;
+      return ((double)cardTypeLeft)/((double)totalCardsLeft);
    }
   
 }

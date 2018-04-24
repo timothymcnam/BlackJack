@@ -50,7 +50,11 @@ public class Deck{
    Deck copyDeck(){
       Deck dup = new Deck(numDecks);
       dup.numCardsLeft = this.numCardsLeft;
-      dup.cardsLeft = new HashMap<Integer, Integer>(cardsLeft);
+      // dup.cardsLeft = new HashMap<Integer, Integer>(cardsLeft);
+      
+      for(int i = 1; i<=13; i++){
+         dup.cardsLeft.put(i,cardsLeft.get(i));
+      }
       
       return dup;
    }

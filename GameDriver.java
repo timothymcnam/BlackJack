@@ -27,9 +27,10 @@ public class GameDriver{
       game.setDealersHand(startHandDealer);
       System.out.println("Your starting hand is: " + startHandPlayer[0] + " , " + startHandPlayer[1] + ".");
       System.out.println("The Dealer's visible card is: " + startHandDealer + ".");
-      double[] res = getProb(game);
-      System.out.println(res[0]);
-      System.out.println(res[0]);
+//       double[] res = getProb(game);
+//       System.out.println(res[0]);
+//       System.out.println(res[0]);
+      System.out.println(getProbStay(game));
       while(true){
          while (handActive == true) {
             System.out.print("If hit, enter card value received. If stay, enter -1");
@@ -43,6 +44,14 @@ public class GameDriver{
    }
    
    static double[] getProb(Game g){
+      System.out.println(g.deck.numCardsLeft);
+      //For testing the decks
+//       System.out.println("Stuff:");
+//       for(Integer i : g.playersHand){
+//          System.out.println(i);
+//       }
+//       System.out.println();
+      
       double[] retArray = new double[2]; //[0] = probability of best move, [1] = the move itself {1 = hit, 2=stay, split, double, surr}
       
       //Calculate probability of winning on move
@@ -111,7 +120,9 @@ public class GameDriver{
       // double[] rets = new double[13];
       double ret = 0.0;
       for(int i =0; i<13; i++){
-         ret += probs[i]*getProb(games[i])[0];
+         if(probs[i]>0.0){
+            ret += probs[i]*getProb(games[i])[0];
+         }
       }
       
       return ret;
@@ -119,22 +130,46 @@ public class GameDriver{
    
    static double getProbStay(Game g){
       //TODO
+      // System.out.println()
+      // System.out.println("New:");
+//       for(Integer i: g.dealersHand){
+//          System.out.println(i);
+//       }
+      
       if(g.dealerMustHit()){
       
          double[] probs = new double[13];
          for(int i =0; i<13; i++){
             probs[i] = g.probOfNextCard(i+1);
          }
-         
+                  
          Game[] games = new Game[13];
          for(int i =0; i<13; i++){
             games[i] = g.copyGame();
+            
+//             //Test
+//             System.out.println("Before:");
+//             for(Integer j: games[i].dealersHand){
+//                System.out.println(j);
+//             }
+//             int t = i+1;
+//             System.out.println("Add to hand: " + t);
+//             //Test ^
+            
             games[i].addToDealersHand(i+1);
+            
+//             //Test
+//             System.out.println("After:");
+//             for(Integer j: games[i].dealersHand){
+//                System.out.println(j);
+//             }
          }
          
          double ret = 0.0;
          for(int i =0; i<13; i++){
-            ret += probs[i]*getProbStay(games[i]);
+            if(probs[i]>0.0){
+               ret += probs[i]*getProbStay(games[i]);
+            }
          }
          return ret;
          
@@ -142,6 +177,7 @@ public class GameDriver{
       else{
          if(g.maxValue(g.playersHand) > 21) return 0.0;
          else if(g.maxValue(g.dealersHand) > 21) return 1.0;
+         else if(g.maxValue(g.playersHand) == 21 && g.playersHand.size() == 2 && g.dealersHand.size() > 2) return 1.0;
          else if(g.maxValue(g.playersHand) == g.maxValue(g.dealersHand)) return 0.5;
          else if(g.maxValue(g.playersHand) > g.maxValue(g.dealersHand)) return 1.0;
          else return 0.0;
