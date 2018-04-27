@@ -1,9 +1,11 @@
 import java.util.Scanner;
+import java.util.HashMap;
 
 public class GameDriver{
    
    static Game game;
    float bet = 10;
+   static HashMap<Game, Double> savedProbs;
    
    public static void main(String[] args){
       game = new Game();
