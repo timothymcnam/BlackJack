@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Game{
    
@@ -195,5 +196,61 @@ public class Game{
       int totalCardsLeft = deck.getNumCardsLeft();
       return ((double)cardTypeLeft)/((double)totalCardsLeft);
    }
+   
+   
+   @Override
+   public int hashCode(){
+      // String str = (this.preL.toLowerCase() + "" + this.preR.toLowerCase());
+//       return str.hashCode();
+      Collections.sort(playersHand);
+      Collections.sort(dealersHand);
+      String str = "";
+      for(int i: playersHand){
+         str += i;
+         str += ",";
+      }
+      str += "p";
+      for(int i: dealersHand){
+         str += i;
+         str += ",";
+      }
+      str += "d";
+      
+      if(haveSplit) str += "t";
+      else str += "f";
+      
+      if(haveDoubled) str += "t";
+      else str += "f";
+      
+      return str.hashCode();
+   }
+   
+   public boolean equals(Game o){
+      if(haveSplit != o.haveSplit) return false;
+      else if(haveDoubled != o.haveDoubled) return false;
+      else if(isTwoArrayListsWithSameValues(playersHand, o.playersHand)) return false;
+      else if(isTwoArrayListsWithSameValues(dealersHand, o.dealersHand)) return false;
+      else return true;
+      
+   }
+   
+   public boolean isTwoArrayListsWithSameValues(ArrayList<Integer> list1, ArrayList<Integer> list2)
+    {
+        //null checking
+        if(list1==null && list2==null)
+            return true;
+        if((list1 == null && list2 != null) || (list1 != null && list2 == null))
+            return false;
+
+        if(list1.size()!=list2.size())
+            return false;
+        for(int itemList1: list1)
+        {
+            if(!list2.contains(itemList1))
+                return false;
+        }
+
+        return true;
+    }
   
 }
