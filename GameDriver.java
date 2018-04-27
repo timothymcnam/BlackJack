@@ -15,35 +15,43 @@ public class GameDriver{
       boolean handActive = true;
       int newCard = 0;
       Scanner sc=new Scanner(System.in);
-      System.out.println("Your starting hand:");
-      System.out.println("Ace = 1, 2 = 2, ...,  King = 13");
-      System.out.println("Enter first card value");
-      startHandPlayer[0] = sc.nextInt();
-      System.out.println("Enter second card value");
-      startHandPlayer[1] = sc.nextInt();
-      game.setPlayersHand(startHandPlayer[0], startHandPlayer[1]);
-      System.out.println("The Dealer's starting hand:");
-      System.out.println("Ace = 1, 2 = 2, ...,  King = 13");
-      System.out.println("Enter the Dealer's visible card value");
-      startHandDealer = sc.nextInt();
-      game.setDealersHand(startHandDealer);
-      System.out.println("Your starting hand is: " + startHandPlayer[0] + " , " + startHandPlayer[1] + ".");
-      System.out.println("The Dealer's visible card is: " + startHandDealer + ".");
-      
-      double[] res = getProb(game);
-      System.out.println(res[0]);
-      System.out.println(res[1]);
-      // System.out.println(getProbStay(game));
       
       while(true){
+         System.out.println("Your starting hand:");
+         System.out.println("Ace = 1, 2 = 2, ...,  King = 13");
+         System.out.println("Enter first card value");
+         startHandPlayer[0] = sc.nextInt();
+         System.out.println("Enter second card value");
+         startHandPlayer[1] = sc.nextInt();
+         game.setPlayersHand(startHandPlayer[0], startHandPlayer[1]);
+         System.out.println("The Dealer's starting hand:");
+         System.out.println("Ace = 1, 2 = 2, ...,  King = 13");
+         System.out.println("Enter the Dealer's visible card value");
+         startHandDealer = sc.nextInt();
+         game.setDealersHand(startHandDealer);
+         System.out.println("Your starting hand is: " + startHandPlayer[0] + " , " + startHandPlayer[1] + ".");
+         System.out.println("The Dealer's visible card is: " + startHandDealer + ".");
+         
+         double[] res = getProb(game);
+         if(res[1] < 1.5) System.out.println("Hit - Prob: " + res[0]);
+         else System.out.println("Stay - Prob: " + res[0]);
+         // System.out.println(getProbStay(game));
+         
+         handActive = true;
          while (handActive == true) {
-            System.out.print("If hit, enter card value received. If stay, enter -1");
+            System.out.println("If hit, enter card value received. If stay, enter -1");
             newCard = sc.nextInt();
-            if (newCard == -1) 
+            if (newCard == -1){
                handActive = false;
-            else  
+            }
+            else{
                game.addToPlayersHand(newCard);
+               res = getProb(game);
+               if(res[1] < 1.5) System.out.println("Hit - Prob: " + res[0]);
+               else System.out.println("Stay - Prob: " + res[0]);
+            }
          }
+         System.out.println("");
       }
    }
    
