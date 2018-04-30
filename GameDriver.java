@@ -4,6 +4,7 @@ import java.util.HashMap;
 public class GameDriver{
    
    static Game game;
+   static JackFrame frame; 
    float bet = 10;
    static HashMap<Game, double[]> savedProbs;
    
@@ -11,27 +12,34 @@ public class GameDriver{
    
       game = new Game();
       savedProbs = new HashMap<Game, double[]>();
+      frame = new JackFrame();
       int[] startHandPlayer = {0,0};
       int startHandDealer = 0;
       boolean handActive = true;
       int newCard = 0;
       Scanner sc=new Scanner(System.in);
       
+      System.out.println("Enter the starting hands into the gui and then type something");
+      String ready = sc.next();
+     
+      game.setPlayersHand(frame.getPlayerCard(0), frame.getPlayerCard(1));
+      game.setDealersHand(frame.getDealerCard(0));
+      
       while(true){
-         System.out.println("Your starting hand:");
-         System.out.println("Ace = 1, 2 = 2, ...,  King = 13");
-         System.out.println("Enter first card value");
-         startHandPlayer[0] = sc.nextInt();
-         System.out.println("Enter second card value");
-         startHandPlayer[1] = sc.nextInt();
-         game.setPlayersHand(startHandPlayer[0], startHandPlayer[1]);
-         System.out.println("The Dealer's starting hand:");
-         System.out.println("Ace = 1, 2 = 2, ...,  King = 13");
-         System.out.println("Enter the Dealer's visible card value");
-         startHandDealer = sc.nextInt();
-         game.setDealersHand(startHandDealer);
-         System.out.println("Your starting hand is: " + startHandPlayer[0] + " , " + startHandPlayer[1] + ".");
-         System.out.println("The Dealer's visible card is: " + startHandDealer + ".");
+//          System.out.println("Your starting hand:");
+//          System.out.println("Ace = 1, 2 = 2, ...,  King = 13");
+//          System.out.println("Enter first card value");
+//          startHandPlayer[0] = sc.nextInt();
+//          System.out.println("Enter second card value");
+//          startHandPlayer[1] = sc.nextInt();
+//          game.setPlayersHand(startHandPlayer[0], startHandPlayer[1]);
+//          System.out.println("The Dealer's starting hand:");
+//          System.out.println("Ace = 1, 2 = 2, ...,  King = 13");
+//          System.out.println("Enter the Dealer's visible card value");
+//          startHandDealer = sc.nextInt();
+//          game.setDealersHand(startHandDealer);
+//          System.out.println("Your starting hand is: " + startHandPlayer[0] + " , " + startHandPlayer[1] + ".");
+//          System.out.println("The Dealer's visible card is: " + startHandDealer + ".");
          
          double[] res = getProb(game);
          if(res[1] < 1.5) System.out.println("Hit - Prob: " + res[0]);
