@@ -17,13 +17,6 @@ public class GameDriver{
       int newCard = 0;
       Scanner sc=new Scanner(System.in);
       
-      double[] n = new double[2];
-      game.addToPlayersHand(2);
-      Game g2 = game.copyGame();
-      savedProbs.put(game, n);
-      System.out.println(savedProbs.containsKey(g2));
-      
-      
       while(true){
          System.out.println("Your starting hand:");
          System.out.println("Ace = 1, 2 = 2, ...,  King = 13");
