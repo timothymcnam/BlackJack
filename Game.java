@@ -225,13 +225,22 @@ public class Game{
       return str.hashCode();
    }
    
+   @Override
+   public boolean equals(Object o){
+      if (o instanceof Game) {
+         return this.equals((Game)o);
+      }
+      else{
+         return false;
+      }
+   }
+   
    public boolean equals(Game o){
       if(haveSplit != o.haveSplit) return false;
       else if(haveDoubled != o.haveDoubled) return false;
-      else if(isTwoArrayListsWithSameValues(playersHand, o.playersHand)) return false;
-      else if(isTwoArrayListsWithSameValues(dealersHand, o.dealersHand)) return false;
+      else if(!isTwoArrayListsWithSameValues(playersHand, o.playersHand)) return false;
+      else if(!isTwoArrayListsWithSameValues(dealersHand, o.dealersHand)) return false;
       else return true;
-      
    }
    
    public boolean isTwoArrayListsWithSameValues(ArrayList<Integer> list1, ArrayList<Integer> list2)

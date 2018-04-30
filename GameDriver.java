@@ -5,16 +5,24 @@ public class GameDriver{
    
    static Game game;
    float bet = 10;
-   static HashMap<Game, Double[]> savedProbs;
+   static HashMap<Game, double[]> savedProbs;
    
    public static void main(String[] args){
+   
       game = new Game();
-      
+      savedProbs = new HashMap<Game, double[]>();
       int[] startHandPlayer = {0,0};
       int startHandDealer = 0;
       boolean handActive = true;
       int newCard = 0;
       Scanner sc=new Scanner(System.in);
+      
+      double[] n = new double[2];
+      game.addToPlayersHand(2);
+      Game g2 = game.copyGame();
+      savedProbs.put(game, n);
+      System.out.println(savedProbs.containsKey(g2));
+      
       
       while(true){
          System.out.println("Your starting hand:");
@@ -63,56 +71,62 @@ public class GameDriver{
 //          System.out.println(i);
 //       }
 //       System.out.println();
-      
-      double[] retArray = new double[2]; //[0] = probability of best move, [1] = the move itself {1 = hit, 2=stay, split, double, surr}
-      
-      //Calculate probability of winning on move
-      //Print average money amount = (won on move * probability of winning) - (money lost * prob losing)
-      
-      if(game.playerCanMove()){
-         //Recursive Case
-         
-         double hitProb = 0.0;
-         double stayProb = 0.0;
-         
-         if(g.playerCanHit()){
-            hitProb = getProbHit(g);
-         }
-         if(g.playerCanStay()){
-            stayProb = getProbStay(g);
-         }
-         
-         if (hitProb > stayProb) retArray = new double[] {hitProb, 1.0};
-         else retArray = new double[] {stayProb, 2.0};
-         
+      if (savedProbs.containsKey(g)) {
+         //System.out.println("Got Prob");
+         return savedProbs.get(g);
       }
       else{
-         //Base Case - End the Recursion
-         retArray = new double[] {0.0, 2.0};
-         // return retArray;
+      
+         double[] retArray = new double[2]; //[0] = probability of best move, [1] = the move itself {1 = hit, 2=stay, split, double, surr}
+         
+         //Calculate probability of winning on move
+         //Print average money amount = (won on move * probability of winning) - (money lost * prob losing)
+         
+         if(game.playerCanMove()){
+            //Recursive Case
+            
+            double hitProb = 0.0;
+            double stayProb = 0.0;
+            
+            if(g.playerCanHit()){
+               hitProb = getProbHit(g);
+            }
+            if(g.playerCanStay()){
+               stayProb = getProbStay(g);
+            }
+            
+            if (hitProb > stayProb) retArray = new double[] {hitProb, 1.0};
+            else retArray = new double[] {stayProb, 2.0};
+            
+         }
+         else{
+            //Base Case - End the Recursion
+            retArray = new double[] {0.0, 2.0};
+            // return retArray;
+         }
+         
+         //ex.
+         //If player's hand is under 21
+         
+            //If can hit
+               //double hitProb = getProbHit();
+               //double hitMoney = (hitProb * bet) - ((1 - hitProb) * bet);
+               
+            //If can stay
+               //calculate this
+               
+            //Calc for other  hand types as wells
+         
+         
+         
+         
+         // Return array with maximum Money amount as well as the number that corresponds to that move  (use retArray)
+         
+         
+         
+         savedProbs.put(g, retArray);
+         return retArray;
       }
-      
-      //ex.
-      //If player's hand is under 21
-      
-         //If can hit
-            //double hitProb = getProbHit();
-            //double hitMoney = (hitProb * bet) - ((1 - hitProb) * bet);
-            
-         //If can stay
-            //calculate this
-            
-         //Calc for other  hand types as wells
-      
-      
-      
-      
-      // Return array with maximum Money amount as well as the number that corresponds to that move  (use retArray)
-      
-      
-      
-      
-      return retArray;
    }
    
    static double getProbHit(Game g){
