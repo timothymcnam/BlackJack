@@ -10,7 +10,7 @@ public class Game{
    public boolean haveDoubled = false;
    
    public Game(){
-      deck = new Deck(1); //Initiate with the number of different decks being used
+      deck = new Deck(10); //Initiate with the number of different decks being used
       playersHand = new ArrayList<Integer>();
       dealersHand = new ArrayList<Integer>();
       
@@ -145,7 +145,7 @@ public class Game{
    }
    
    boolean playerCanSplit(){
-      if(playersHand.size() == 2 && playersHand.get(0) == playersHand.get(1)) return true;
+      if(playersHand.size() == 2 && cardNumToVal(playersHand.get(0), true) == cardNumToVal(playersHand.get(1), true) && !haveSplit) return true;
       else return false;
    }
    
@@ -155,8 +155,8 @@ public class Game{
    }
    
    boolean playerCanSurrender(){
-      if(playersHand.size() >= 2) return true;
-      else return false;
+      if(playersHand.size() != 2 || haveSplit) return false;
+      else return true;
    }
    
    //If the dealer hits or stays

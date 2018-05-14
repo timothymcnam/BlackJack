@@ -4,7 +4,7 @@ import java.util.HashMap;
 public class GameDriver{
    
    static Game game;
-   float bet = 10;
+   static float bet = 10;
    static HashMap<Game, double[]> savedProbs;
    
    public static void main(String[] args){
@@ -35,8 +35,11 @@ public class GameDriver{
          
          double[] res = getProb(game);
          if(res[1] < 1.5) System.out.println("Hit - Prob: " + res[0]);
-         else System.out.println("Stay - Prob: " + res[0]);
-         // System.out.println(getProbStay(game));
+         else if(res[1] < 2.5) System.out.println("Stay - Prob: " + res[0]);
+         else if(res[1] < 3.5) System.out.println("Double - Prob: " + res[0]);
+         else if(res[1] < 4.5) System.out.println("Split - Prob: " + res[0]);
+         else if(res[1] < 5.5) System.out.println("Surrender - Prob: " + res[0]);
+         else System.out.println("Error - Prob: " + res[0]);
          
          handActive = true;
          while (handActive == true) {
@@ -57,20 +60,12 @@ public class GameDriver{
    }
    
    static double[] getProb(Game g){
-     //  System.out.println(g.deck.numCardsLeft);
-      //For testing the decks
-//       System.out.println("Stuff:");
-//       for(Integer i : g.playersHand){
-//          System.out.println(i);
-//       }
-//       System.out.println();
       if (savedProbs.containsKey(g)) {
-         //System.out.println("Got Prob");
          return savedProbs.get(g);
       }
       else{
       
-         double[] retArray = new double[2]; //[0] = probability of best move, [1] = the move itself {1 = hit, 2=stay, split, double, surr}
+         double[] retArray = new double[2]; //[0] = probability of best move, [1] = the move itself {1 = hit, 2=stay, double, split, surr}
          
          //Calculate probability of winning on move
          //Print average money amount = (won on move * probability of winning) - (money lost * prob losing)
@@ -80,42 +75,50 @@ public class GameDriver{
             
             double hitProb = 0.0;
             double stayProb = 0.0;
+            double doubleProb = 0.0;
+            double splitProb = 0.0;
+            double surrenderProb = 0.0;
+            
+            double hitMoney = -10.0 * bet;
+            double stayMoney = -10.0 * bet;
+            double doubleMoney = -10.0 * bet;
+            double splitMoney = -10.0 * bet;
+            double surrenderMoney = -10.0 * bet;
             
             if(g.playerCanHit()){
                hitProb = getProbHit(g);
+               hitMoney = (bet * (float)hitProb) - (bet * (1.0f - (float)hitProb));
             }
             if(g.playerCanStay()){
                stayProb = getProbStay(g);
+               stayMoney = (bet * (float)stayProb) - (bet * (1.0f - (float)stayProb));
             }
+            if(g.playerCanDouble()){
+               doubleProb = getProbDouble(g);
+               doubleMoney = (2.0f * bet * (float)doubleProb) - (2 * bet * (1.0f - (float)doubleProb));
+            }
+            if(g.playerCanSplit()){
+               splitProb = -10.0 * bet;
+               splitMoney = -10.0 * bet;
+            }
+            if(g.playerCanSurrender()){
+               surrenderProb = 0.0;
+               surrenderMoney = -0.5f * bet;
+            }
+
             
-            if (hitProb > stayProb) retArray = new double[] {hitProb, 1.0};
+            if(hitMoney >= stayMoney && hitMoney >= doubleMoney && hitMoney >= splitMoney && hitMoney >= surrenderMoney) retArray = new double[] {hitProb, 1.0};
+            else if(stayMoney >= hitMoney && stayMoney >= doubleMoney && stayMoney >= splitMoney && stayMoney >= surrenderMoney) retArray = new double[] {stayProb, 2.0};
+            else if(doubleMoney >= hitMoney && doubleMoney >= stayMoney && doubleMoney >= splitMoney && doubleMoney >= surrenderMoney) retArray = new double[] {doubleProb, 3.0};
+            else if(splitMoney >= hitMoney && splitMoney >= stayMoney && splitMoney >= doubleMoney && splitMoney >= surrenderMoney) retArray = new double[] {splitProb, 4.0};
+            else if(surrenderMoney >= hitMoney && surrenderMoney >= stayMoney && surrenderMoney >= doubleMoney && surrenderMoney >= splitMoney) retArray = new double[] {surrenderProb, 5.0};
             else retArray = new double[] {stayProb, 2.0};
             
          }
          else{
             //Base Case - End the Recursion
             retArray = new double[] {0.0, 2.0};
-            // return retArray;
          }
-         
-         //ex.
-         //If player's hand is under 21
-         
-            //If can hit
-               //double hitProb = getProbHit();
-               //double hitMoney = (hitProb * bet) - ((1 - hitProb) * bet);
-               
-            //If can stay
-               //calculate this
-               
-            //Calc for other  hand types as wells
-         
-         
-         
-         
-         // Return array with maximum Money amount as well as the number that corresponds to that move  (use retArray)
-         
-         
          
          savedProbs.put(g, retArray);
          return retArray;
@@ -148,12 +151,6 @@ public class GameDriver{
    }
    
    static double getProbStay(Game g){
-      //TODO
-      // System.out.println()
-      // System.out.println("New:");
-//       for(Integer i: g.dealersHand){
-//          System.out.println(i);
-//       }
       
       if(g.dealerMustHit()){
       
@@ -165,23 +162,7 @@ public class GameDriver{
          Game[] games = new Game[13];
          for(int i =0; i<13; i++){
             games[i] = g.copyGame();
-            
-//             //Test
-//             System.out.println("Before:");
-//             for(Integer j: games[i].dealersHand){
-//                System.out.println(j);
-//             }
-//             int t = i+1;
-//             System.out.println("Add to hand: " + t);
-//             //Test ^
-            
             games[i].addToDealersHand(i+1);
-            
-//             //Test
-//             System.out.println("After:");
-//             for(Integer j: games[i].dealersHand){
-//                System.out.println(j);
-//             }
          }
          
          double ret = 0.0;
@@ -203,21 +184,33 @@ public class GameDriver{
       }
       
    }
+
+   static double getProbDouble(Game g){
+      //TODO
+      double[] probs = new double[13];
+      for(int i =0; i<13; i++){
+         probs[i] = g.probOfNextCard(i+1);
+      }
+      
+      Game[] games = new Game[13];
+      for(int i =0; i<13; i++){
+         games[i] = g.copyGame();
+         games[i].addToPlayersHand(i+1);
+         games[i].haveDoubled = true;
+      }
+            
+      double ret = 0.0;
+      for(int i =0; i<13; i++){
+         if(probs[i]>0.0){
+            ret += probs[i]*getProb(games[i])[0];
+         }
+      }
+      
+      return ret;
+   }
    
-//    double[] getProbSplit(){
-//       //TODO
-//       double[] retArray = new double[2]; //[0] = probability of 1st hand, [1] = probability of 2nd
-//       
-//       return retArray;
-//    }
-//    
-//    double getProbDouble(){
-//       //TODO
-//       return 0.0;
-//    }
-//    
-//    double getProbSurrender(){
-//       return 0.0;
-//    }
+   static double getProbSurrender(Game g){
+      return 0.0;
+   }
   
 }
