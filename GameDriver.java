@@ -98,8 +98,10 @@ public class GameDriver{
                doubleMoney = (2.0f * bet * (float)doubleProb) - (2 * bet * (1.0f - (float)doubleProb));
             }
             if(g.playerCanSplit()){
-               splitProb = -10.0 * bet;
-               splitMoney = -10.0 * bet;
+               //splitProb = 0;
+               splitMoney = -10.0f * bet;
+               //splitProb = getProbSplit(g);
+               //splitMoney = (2.0f * bet * (float)splitProb) - (2 * bet * (1.0f - (float)splitProb));
             }
             if(g.playerCanSurrender()){
                surrenderProb = 0.0;
@@ -151,7 +153,19 @@ public class GameDriver{
    }
    
    static double getProbStay(Game g){
-      
+      if(g.haveSplit && g.splitCard != -1){
+         //continue recursion to get prob of other hand
+         Game g2 = g.copyGame();
+         g2.playersHand.clear();
+         g2.playersHand.add(g.splitCard);
+         g2.splitCard = -1;
+         return (getProbStayHelper(g) + getProb(g2)[0])/2.0f;
+      }
+      else{
+         return getProbStayHelper(g);
+      }
+   }
+   static double getProbStayHelper(Game g){   
       if(g.dealerMustHit()){
       
          double[] probs = new double[13];
@@ -171,6 +185,7 @@ public class GameDriver{
                ret += probs[i]*getProbStay(games[i]);
             }
          }
+         
          return ret;
          
       }
@@ -197,6 +212,35 @@ public class GameDriver{
          games[i] = g.copyGame();
          games[i].addToPlayersHand(i+1);
          games[i].haveDoubled = true;
+      }
+            
+      double ret = 0.0;
+      for(int i =0; i<13; i++){
+         if(probs[i]>0.0){
+            ret += probs[i]*getProb(games[i])[0];
+         }
+      }
+      
+      return ret;
+   }
+   
+   static double getProbSplit(Game g){
+      //TODO
+      Game g2 = g.copyGame();
+      g2.playersHand.clear();
+      g2.playersHand.add(g.playersHand.get(0));
+      
+      double[] probs = new double[13];
+      for(int i =0; i<13; i++){
+         probs[i] = g.probOfNextCard(i+1);
+      }
+      
+      Game[] games = new Game[13];
+      for(int i =0; i<13; i++){
+         games[i] = g2.copyGame();
+         games[i].addToPlayersHand(i+1);
+         games[i].haveSplit = true;
+         games[i].splitCard = g.playersHand.get(1);
       }
             
       double ret = 0.0;

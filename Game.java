@@ -7,6 +7,7 @@ public class Game{
    ArrayList<Integer> dealersHand;
    ArrayList<Integer> playersHand;
    public boolean haveSplit = false;
+   public int splitCard = -1;
    public boolean haveDoubled = false;
    
    public Game(){
@@ -87,6 +88,10 @@ public class Game{
       }
       
       dup.deck = deck.copyDeck();
+      
+      dup.haveSplit = haveSplit;
+      dup.haveDoubled = haveDoubled;
+      dup.splitCard = splitCard;
       
       return dup;
    }
