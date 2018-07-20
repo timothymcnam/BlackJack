@@ -65,7 +65,7 @@ public class Game{
       savedProbs.clear();
    }
    
-   double[] getProb(){
+   double[] getProb(int depth){
       
       double[] retArray = new double[2]; //[0] = probability of best move, [1] = the move itself {1 = hit, 2=stay, double, split, surr}
       
@@ -92,7 +92,7 @@ public class Game{
          double surrenderMoney = -10.0 * bet;
          
          if(playersHand.playerCanHit()){
-            hitProb = getProbHit();
+            hitProb = getProbHit(depth);
             hitMoney = (bet * hitProb) - (bet * (1.0 - hitProb));
          }
          if(playersHand.playerCanStay()){
@@ -103,8 +103,8 @@ public class Game{
             doubleProb = getProbDouble();
             doubleMoney = (2.0 * bet * doubleProb) - (2.0 * bet * (1.0 - doubleProb));
          }
-         if(playersHand.playerCanSplit()){
-            // splitProb = getProbSplit();
+         if(playersHand.playerCanSplit() && depth < 3){
+            splitProb = getProbSplit(depth);
             splitMoney = (2.0 * bet * splitProb) - (2.0 * bet * (1.0 - splitProb));
          }
          if(playersHand.playerCanSurrender()){
@@ -129,7 +129,7 @@ public class Game{
       return retArray;
    }
    
-   double getProbHit(){
+   double getProbHit(int depth){
       double[] probs = new double[10];
       for(int i =0; i<10; i++){
          probs[i] = deck.probOfNextCard(i+1);
@@ -144,7 +144,7 @@ public class Game{
       double ret = 0.0;
       for(int i =0; i<10; i++){
          if(probs[i]>0.0){
-            ret += probs[i]*games[i].getProb()[0];
+            ret += probs[i]*games[i].getProb(depth+1)[0];
          }
       }
       
@@ -209,7 +209,7 @@ public class Game{
       return ret;
    }
    
-   double getProbSplit() {
+   double getProbSplit(int depth) {
       double[] probs = new double[10];
       for(int i =0; i<10; i++){
          probs[i] = deck.probOfNextCard(i+1);
@@ -231,7 +231,7 @@ public class Game{
       double ret = 0.0;
       for(int i =0; i<10; i++){
          if(probs[i]>0.0){
-            ret += probs[i]*games[i].getProb()[0];
+            ret += probs[i]*games[i].getProb(depth+1)[0];
          }
       }
       

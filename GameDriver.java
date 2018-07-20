@@ -8,7 +8,7 @@ public class GameDriver{
    public static void main(String[] args){
       game = new Game(6);
       
-      double[] retArray = game.getProb();
+      double[] retArray = game.getProb(0);
       System.out.println(retArray[0]);
       System.out.println(retArray[1]);
    }
@@ -48,7 +48,7 @@ public class GameDriver{
 //          int d = sc.nextInt();
 //          game.addToDealersHand(d);
 //          
-//          double[] res = game.getProb();
+//          double[] res = game.getProb(0);
 //          if(res[1] < 1.5) System.out.println("Hit - Prob: " + res[0]);
 //          else if(res[1] < 2.5) System.out.println("Stay - Prob: " + res[0]);
 //          else if(res[1] < 3.5) System.out.println("Double - Prob: " + res[0]);
@@ -87,7 +87,7 @@ public class GameDriver{
 //          System.out.println("Your starting hand is: " + startHandPlayer[0] + " , " + startHandPlayer[1] + ".");
 //          System.out.println("The Dealer's visible card is: " + startHandDealer + ".");
 //          
-//          double[] res = game.getProb();
+//          double[] res = game.getProb(0);
 //          if(res[1] < 1.5) System.out.println("Hit - Prob: " + res[0]);
 //          else if(res[1] < 2.5) System.out.println("Stay - Prob: " + res[0]);
 //          else if(res[1] < 3.5) System.out.println("Double - Prob: " + res[0]);
@@ -104,7 +104,7 @@ public class GameDriver{
 //             }
 //             else{
 //                game.addToPlayersHand(newCard);
-//                res = game.getProb();
+//                res = game.getProb(0);
 //                if(res[1] < 1.5) System.out.println("Hit - Prob: " + res[0]);
 //                else System.out.println("Stay - Prob: " + res[0]);
 //             }

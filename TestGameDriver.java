@@ -194,7 +194,7 @@ public class TestGameDriver{
       System.out.println("vs");
       System.out.println("Dealer: " + dealer.total);
       
-      double move = g.getProb()[1];
+      double move = g.getProb(0)[1];
       // System.out.println(move);
       System.out.println((int)move);
       return (int)move;
