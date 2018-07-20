@@ -79,12 +79,6 @@ public class Game{
             return savedProbs.get(this);
          }
          
-         double hitProb = 0.0;
-         double stayProb = 0.0;
-         double doubleProb = 0.0;
-         double splitProb = 0.0;
-         double surrenderProb = 0.0;
-         
          double hitMoney = -10.0 * bet;
          double stayMoney = -10.0 * bet;
          double doubleMoney = -10.0 * bet;
@@ -92,37 +86,32 @@ public class Game{
          double surrenderMoney = -10.0 * bet;
          
          if(playersHand.playerCanHit()){
-            hitProb = getProbHit(depth);
-            hitMoney = (bet * hitProb) - (bet * (1.0 - hitProb));
+            hitMoney = getProbHit(depth);
          }
          if(playersHand.playerCanStay()){
-            stayProb = getProbStay();
-            stayMoney = (bet * stayProb) - (bet * (1.0 - stayProb));
+            stayMoney = getProbStay();
          }
          if(playersHand.playerCanDouble()){
-            doubleProb = getProbDouble();
-            doubleMoney = (2.0 * bet * doubleProb) - (2.0 * bet * (1.0 - doubleProb));
+            doubleMoney = getProbDouble();
          }
          if(playersHand.playerCanSplit() && depth < 3){
-            splitProb = getProbSplit(depth);
-            splitMoney = (2.0 * bet * splitProb) - (2.0 * bet * (1.0 - splitProb));
+            splitMoney = getProbSplit(depth);
          }
          if(playersHand.playerCanSurrender()){
-            surrenderProb = 0.0;
             surrenderMoney = -0.5 * bet;
          }
          
-         if(hitMoney >= stayMoney && hitMoney >= doubleMoney && hitMoney >= splitMoney && hitMoney >= surrenderMoney) retArray = new double[] {hitProb, 1.0};
-         else if(stayMoney >= hitMoney && stayMoney >= doubleMoney && stayMoney >= splitMoney && stayMoney >= surrenderMoney) retArray = new double[] {stayProb, 2.0};
-         else if(doubleMoney >= hitMoney && doubleMoney >= stayMoney && doubleMoney >= splitMoney && doubleMoney >= surrenderMoney) retArray = new double[] {doubleProb, 3.0};
-         else if(splitMoney >= hitMoney && splitMoney >= stayMoney && splitMoney >= doubleMoney && splitMoney >= surrenderMoney) retArray = new double[] {splitProb, 4.0};
-         else if(surrenderMoney >= hitMoney && surrenderMoney >= stayMoney && surrenderMoney >= doubleMoney && surrenderMoney >= splitMoney) retArray = new double[] {surrenderProb, 5.0};
-         else retArray = new double[] {stayProb, 2.0};     
+         if(hitMoney >= stayMoney && hitMoney >= doubleMoney && hitMoney >= splitMoney && hitMoney >= surrenderMoney) retArray = new double[] {hitMoney, 1.0};
+         else if(stayMoney >= hitMoney && stayMoney >= doubleMoney && stayMoney >= splitMoney && stayMoney >= surrenderMoney) retArray = new double[] {stayMoney, 2.0};
+         else if(doubleMoney >= hitMoney && doubleMoney >= stayMoney && doubleMoney >= splitMoney && doubleMoney >= surrenderMoney) retArray = new double[] {doubleMoney, 3.0};
+         else if(splitMoney >= hitMoney && splitMoney >= stayMoney && splitMoney >= doubleMoney && splitMoney >= surrenderMoney) retArray = new double[] {splitMoney, 4.0};
+         else if(surrenderMoney >= hitMoney && surrenderMoney >= stayMoney && surrenderMoney >= doubleMoney && surrenderMoney >= splitMoney) retArray = new double[] {surrenderMoney, 5.0};
+         else retArray = new double[] {stayMoney, 2.0};     
          
       }
       else{
          //Base Case - End the Recursion
-         retArray = new double[] {0.0, 2.0};
+         retArray = new double[] {-1.0 * bet, 2.0};
       
       }
       savedProbs.put(this, retArray);
@@ -176,12 +165,12 @@ public class Game{
          
       }
       else{
-         if(playersHand.minValue() > 21) return 0.0;
-         else if(dealersHand.maxValue() > 21) return 1.0;         
-         else if(playersHand.maxValue() == 21 && playersHand.numCards == 2) return 1.0;
-         else if(playersHand.maxValue() == dealersHand.maxValue()) return 0.5;
-         else if(playersHand.maxValue() > dealersHand.maxValue()) return 1.0;
-         else return 0.0;
+         if(playersHand.minValue() > 21) return -1.0 * bet;
+         else if(dealersHand.maxValue() > 21) return 1.0 * bet;         
+         else if(playersHand.maxValue() == 21 && playersHand.numCards == 2) return (3.0/2.0) * bet;
+         else if(playersHand.maxValue() == dealersHand.maxValue()) return 0.0;
+         else if(playersHand.maxValue() > dealersHand.maxValue()) return 1.0 * bet;
+         else return -1.0 * bet;
       }
       
    }
@@ -202,7 +191,7 @@ public class Game{
       double ret = 0.0;
       for(int i =0; i<10; i++){
          if(probs[i]>0.0){
-            ret += probs[i]*games[i].getProbStay();
+            ret += 2.0*probs[i]*games[i].getProbStay();
          }
       }
       
@@ -231,7 +220,7 @@ public class Game{
       double ret = 0.0;
       for(int i =0; i<10; i++){
          if(probs[i]>0.0){
-            ret += probs[i]*games[i].getProb(depth+1)[0];
+            ret += 2.0*probs[i]*games[i].getProb(depth+1)[0];
          }
       }
       
@@ -240,7 +229,7 @@ public class Game{
    }
    
    double getProbSurrender(){
-      return 0.0;
+      return -0.5 * bet;
    }
 
    

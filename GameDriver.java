@@ -5,7 +5,7 @@ public class GameDriver{
    
    static Game game;
    
-   public static void main(String[] args){
+   public static void mainss(String[] args){
       game = new Game(6);
       
       double[] retArray = game.getProb(0);
@@ -15,7 +15,60 @@ public class GameDriver{
    
    
    
-//    public static void main(String[] args){
+   public static void mains(String[] args){
+   
+      game = new Game(100000);
+      int[] startHandPlayer = {0,0};
+      int startHandDealer = 0;
+      boolean handActive = true;
+      int newCard = 0;
+      Scanner sc=new Scanner(System.in);
+      
+      while(true){
+         System.out.println("Your starting hand:");
+         int p = sc.nextInt();
+         if(p > 11){
+            game.addToPlayersHand(p-10);
+            game.addToPlayersHand(10);
+         }
+         else if(p == 11){
+            game.addToPlayersHand(5);
+            game.addToPlayersHand(6);
+         }
+         else if(p == 6){
+            game.addToPlayersHand(2);
+            game.addToPlayersHand(2);
+         }
+         else{
+            game.addToPlayersHand(p-3);
+            game.addToPlayersHand(3);
+         }
+         
+         System.out.println("The Dealer's starting hand:");
+         int d = sc.nextInt();
+         game.addToDealersHand(d);
+         
+         double[] res = game.getProb(0);
+         if(res[1] < 1.5) System.out.println("Hit - Prob: " + res[0]);
+         else if(res[1] < 2.5) System.out.println("Stay - Prob: " + res[0]);
+         else if(res[1] < 3.5) System.out.println("Double - Prob: " + res[0]);
+         else if(res[1] < 4.5) System.out.println("Split - Prob: " + res[0]);
+         else if(res[1] < 5.5) System.out.println("Surrender - Prob: " + res[0]);
+         else System.out.println("Error - Prob: " + res[0]);
+         
+         game = new Game(100000);
+      }
+   }
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   // public static void main(String[] args){
 //    
 //       game = new Game(100000);
 //       int[] startHandPlayer = {0,0};
@@ -24,9 +77,11 @@ public class GameDriver{
 //       int newCard = 0;
 //       Scanner sc=new Scanner(System.in);
 //       
-//       while(true){
-//          System.out.println("Your starting hand:");
-//          int p = sc.nextInt();
+//       // while(true){
+//       for(int p = 8; p<18; p++){
+//       for(int d = 2; d<11; d++){
+//          System.out.println("P: " + p);
+//          // int p = sc.nextInt();
 //          if(p > 11){
 //             game.addToPlayersHand(p-10);
 //             game.addToPlayersHand(10);
@@ -44,8 +99,8 @@ public class GameDriver{
 //             game.addToPlayersHand(3);
 //          }
 //          
-//          System.out.println("The Dealer's starting hand:");
-//          int d = sc.nextInt();
+//          System.out.println("D: " + d);
+//          //int d = sc.nextInt();
 //          game.addToDealersHand(d);
 //          
 //          double[] res = game.getProb(0);
@@ -58,7 +113,92 @@ public class GameDriver{
 //          
 //          game = new Game(100000);
 //       }
+//       }
 //    }
+
+   
+   
+   
+   
+   
+      public static void mainssss(String[] args){
+   
+      game = new Game(100000);
+      int[] startHandPlayer = {0,0};
+      int startHandDealer = 0;
+      boolean handActive = true;
+      int newCard = 0;
+      Scanner sc=new Scanner(System.in);
+      
+      // while(true){
+      for(int p = 2; p<=8; p++){
+      for(int d = 2; d<11; d++){
+         System.out.println("P: " + p);
+         // int p = sc.nextInt();
+        
+            game.addToPlayersHand(1);
+            game.addToPlayersHand(p);
+         
+         System.out.println("D: " + d);
+         //int d = sc.nextInt();
+         game.addToDealersHand(d);
+         
+         double[] res = game.getProb(0);
+         if(res[1] < 1.5) System.out.println("Hit - Prob: " + res[0]);
+         else if(res[1] < 2.5) System.out.println("Stay - Prob: " + res[0]);
+         else if(res[1] < 3.5) System.out.println("Double - Prob: " + res[0]);
+         else if(res[1] < 4.5) System.out.println("Split - Prob: " + res[0]);
+         else if(res[1] < 5.5) System.out.println("Surrender - Prob: " + res[0]);
+         else System.out.println("Error - Prob: " + res[0]);
+         
+         game = new Game(100000);
+      }
+      }
+   }
+   
+   
+   
+   
+   
+   public static void main(String[] args){
+   
+      game = new Game(100000);
+      int[] startHandPlayer = {0,0};
+      int startHandDealer = 0;
+      boolean handActive = true;
+      int newCard = 0;
+      Scanner sc=new Scanner(System.in);
+      
+      // while(true){
+      for(int p = 9; p<=10; p++){
+      for(int d = 1; d<=10; d++){
+         System.out.println("P: " + p);
+         // int p = sc.nextInt();
+        
+            game.addToPlayersHand(p);
+            game.addToPlayersHand(p);
+         
+         System.out.println("D: " + d);
+         //int d = sc.nextInt();
+         game.addToDealersHand(d);
+         
+         double[] res = game.getProb(0);
+         if(res[1] < 1.5) System.out.println("Hit - Prob: " + res[0]);
+         else if(res[1] < 2.5) System.out.println("Stay - Prob: " + res[0]);
+         else if(res[1] < 3.5) System.out.println("Double - Prob: " + res[0]);
+         else if(res[1] < 4.5) System.out.println("Split - Prob: " + res[0]);
+         else if(res[1] < 5.5) System.out.println("Surrender - Prob: " + res[0]);
+         else System.out.println("Error - Prob: " + res[0]);
+         
+         game = new Game(100000);
+      }
+      }
+   }
+
+   
+   
+   
+   
    
    
       

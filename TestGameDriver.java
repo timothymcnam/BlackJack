@@ -10,7 +10,7 @@ public class TestGameDriver{
    static double money = 1000;
    static double bet = 10;
    
-   static final int NUM_DECKS = 6;
+   static final int NUM_DECKS = 2;
    
    static int i = 0;
    
@@ -21,7 +21,7 @@ public class TestGameDriver{
       i = 0;
       
       while(i < 10000){
-         while(deck.numCardsLeft > 52){
+         while(deck.numCardsLeft > 30){
             playHand();
             i++;
             System.out.println(i);
