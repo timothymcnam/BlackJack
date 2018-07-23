@@ -65,6 +65,10 @@ public class Game{
       savedProbs.clear();
    }
    
+   double[] getProb(){
+      return getProb(0);
+   }
+   
    double[] getProb(int depth){
       
       double[] retArray = new double[2]; //[0] = probability of best move, [1] = the move itself {1 = hit, 2=stay, double, split, surr}
@@ -94,7 +98,7 @@ public class Game{
          if(playersHand.playerCanDouble()){
             doubleMoney = getProbDouble();
          }
-         if(playersHand.playerCanSplit() && depth < 3){
+         if(playersHand.playerCanSplit() && depth < 2){
             splitMoney = getProbSplit(depth);
          }
          if(playersHand.playerCanSurrender()){
@@ -290,3 +294,14 @@ public class Game{
 
 //TODO Bug where you can keep splitting and keep hitting to draw he same card
 //Cause Infinite loop
+
+//TODO implement a way to bet more as we get further into a game with more cards counted
+
+//TODO Calculate if the odds are in my favor
+
+//TODO Rename Prob to Money
+
+//TODO make split run faster 
+
+//TODO make a hashmap saving what the dealer ends up with
+//   ex. probability they end on a 17,18,19,20,21

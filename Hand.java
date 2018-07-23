@@ -81,7 +81,7 @@ public class Hand{
    }
    
    boolean playerCanDouble(){
-      if(numCards == 2) return true;
+      if(playerCanHit() && numCards >= 2) return true;
       else return false;
    }
    
