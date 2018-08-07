@@ -170,8 +170,9 @@ public class Game{
       }
       else{
          if(playersHand.minValue() > 21) return -1.0 * bet;
-         else if(dealersHand.maxValue() > 21) return 1.0 * bet;         
-         else if(playersHand.maxValue() == 21 && playersHand.numCards == 2) return (3.0/2.0) * bet;
+         else if(dealersHand.maxValue() > 21) return 1.0 * bet;
+         else if(playersHand.maxValue() == 21 && playersHand.numCards == 2 && (dealersHand.maxValue() != 21 || dealersHand.numCards != 2)) return (3.0/2.0) * bet;
+         else if(dealersHand.maxValue() == 21 && dealersHand.numCards == 2 && (playersHand.maxValue() != 21 || playersHand.numCards != 2)) return -1.0 * bet;
          else if(playersHand.maxValue() == dealersHand.maxValue()) return 0.0;
          else if(playersHand.maxValue() > dealersHand.maxValue()) return 1.0 * bet;
          else return -1.0 * bet;
@@ -216,6 +217,7 @@ public class Game{
          games[i].playersHand.numAces = playersHand.numAces/2;
          games[i].playersHand.numCards = playersHand.numCards/2;
          games[i].playersHand.splitPossible = false;
+         games[i].playersHand.haveSplit = false;
          games[i].addToPlayersHand(i+1);
          //TODO this line doesn't account for splitting twice
          //games[i].playersHand.splitPossible = false;

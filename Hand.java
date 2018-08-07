@@ -7,6 +7,7 @@ public class Hand{
    
    //TODO Do we still need this?
    boolean haveDoubled = false;
+   boolean haveSplit = false;
    
    
    public Hand () {
@@ -31,11 +32,12 @@ public class Hand{
       dup.numCards = numCards;
       dup.splitPossible = splitPossible;
       dup.haveDoubled = haveDoubled;
+      dup.haveSplit = haveSplit;
       return dup;
    }
    
    public boolean equals(Hand h) {
-      if(total == h.total && numAces == h.numAces && numCards == h.numCards && splitPossible == h.splitPossible && haveDoubled == h.haveDoubled) return true;
+      if(total == h.total && numAces == h.numAces && numCards == h.numCards && splitPossible == h.splitPossible && haveDoubled == h.haveDoubled && haveSplit == h.haveSplit) return true;
       else return false;
    }
    
@@ -87,7 +89,7 @@ public class Hand{
    
    boolean playerCanSurrender(){
       //TODO make sure this is the rules
-      if(numCards == 2) return true;
+      if(numCards == 2 && !haveSplit) return true;
       else return false;
    }
    
